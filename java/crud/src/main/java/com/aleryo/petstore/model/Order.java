@@ -1,9 +1,9 @@
-package com.aleryo.crudstore.model;
+package com.aleryo.petstore.model;
 
 import java.util.List;
 
 public class Order {
     int id;
     Customer customer;
-    List<Product> products;
+    List<Pet> products;
 }

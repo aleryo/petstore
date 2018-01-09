@@ -1,6 +1,18 @@
-package com.aleryo.crudstore.model;
+package com.aleryo.petstore.model;
 
 public class Customer {
+    Integer id;
+    String name;
+
+    public Customer(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public Customer() {
+
+    }
+
     public Integer getId() {
         return id;
     }
@@ -15,17 +27,5 @@ public class Customer {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    Integer id;
-    String name;
-
-    public Customer(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public Customer() {
-
     }
 }
