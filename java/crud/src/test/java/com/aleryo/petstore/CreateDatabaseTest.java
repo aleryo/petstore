@@ -18,13 +18,14 @@ public class CreateDatabaseTest {
 
         createTableCustomers(jdbi);
         createTablePets(jdbi);
+        createTableOrder(jdbi);
     }
 
     private void createTableCustomers(Jdbi jdbi) {
         List<Customer> customers = Arrays.asList(
-                new Customer(1, "Ann"),
-                new Customer(2, "Theresa"),
-                new Customer(3, "Mike")
+                new Customer("Ann"),
+                new Customer("Theresa"),
+                new Customer("Mike")
         );
 
         jdbi.useHandle(handle -> {
@@ -34,10 +35,10 @@ public class CreateDatabaseTest {
 
             }
 
-            handle.execute("CREATE TABLE customer (id INTEGER PRIMARY KEY, name VARCHAR)");
+            handle.execute("CREATE TABLE customer (id SERIAL PRIMARY KEY, name VARCHAR)");
 
             for(Customer c : customers) {
-                handle.createUpdate("INSERT INTO customer(id, name) VALUES (:id, :name)")
+                handle.createUpdate("INSERT INTO customer(name) VALUES (:name)")
                         .bindBean(c)
                         .execute();
             }
@@ -46,9 +47,9 @@ public class CreateDatabaseTest {
 
     private void createTablePets(Jdbi jdbi) {
         List<Pet> pets = Arrays.asList(
-                new Pet(1, "Yorkshire", 10.0),
-                new Pet(2, "Bulldog", 20.0),
-                new Pet(3, "Cat", 30.)
+                new Pet("Yorkshire", 10.0),
+                new Pet("Bulldog", 20.0),
+                new Pet("Cat", 30.)
         );
 
         jdbi.useHandle(handle -> {
@@ -57,13 +58,26 @@ public class CreateDatabaseTest {
             } catch (Exception e) {
 
             }
-            handle.execute("CREATE TABLE pet (id INTEGER PRIMARY KEY, name VARCHAR, price DECIMAL)");
+            handle.execute("CREATE TABLE pet (id SERIAL PRIMARY KEY, name VARCHAR, price DECIMAL)");
 
             for(Pet p : pets) {
-                handle.createUpdate("INSERT INTO pet(id, name, price) VALUES (:id, :name, :price)")
+                handle.createUpdate("INSERT INTO pet(name, price) VALUES (:name, :price)")
                         .bindBean(p)
                         .execute();
             }
+        });
+    }
+
+    private void createTableOrder(Jdbi jdbi) {
+        jdbi.useHandle(handle -> {
+            try {
+                handle.execute("DROP TABLE order");
+                handle.execute("DROP TABLE order_pet");
+            } catch (Exception e) {
+
+            }
+            handle.execute("CREATE TABLE basket (id SERIAL PRIMARY KEY, customer_id INTEGER)");
+            handle.execute("CREATE TABLE basket_pet (id SERIAL PRIMARY KEY, basket_id INTEGER, pet_id INTEGER)");
         });
     }
 }

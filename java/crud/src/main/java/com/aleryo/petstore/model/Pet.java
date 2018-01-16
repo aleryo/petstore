@@ -32,13 +32,8 @@ public class Pet {
 
     BigDecimal price;
 
-    public Pet(int id, String name, Double price) {
-        this.id = id;
+    public Pet(String name, Double price) {
         this.name = name;
         this.price = BigDecimal.valueOf(price);
-    }
-
-    public Pet() {
-
     }
 }
